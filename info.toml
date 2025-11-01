@@ -1,8 +1,8 @@
 [meta]
-name = ""
-author = "ar....."
+name = "Batch Shadow Compute"
+author = "ar"
 version = "0.1.0"
-category = "!"
+category = "Map Editor"
 
 [script]
-optional_dependencies = [ "" ]
+optional_dependencies = [ "Editor" ]

@@ -1,15 +1,15 @@
-[Setting hidden name="Enabled"]
+[Setting category="General"]
 bool S_Enabled = true;
 
-[Setting hidden name="Show/hide with game UI"]
-bool S_HideWithGame = true;
+[Setting category="General"]
+bool S_HideWithGame = false;
 
-[Setting hidden name="Show/hide with Openplanet UI"]
-bool S_HideWithOP = false;
+[Setting category="General"]
+bool S_HideWithOP = true;
 
-[SettingsTab name="Settings" icon="Cog" order="99999999999999999999999999999999999999999999999998"] // One less than logging
-void RenderBasicSettings() {
-    UI::Checkbox("Enabled", S_Enabled);
-    UI::Checkbox("Show/hide with game UI", S_HideWithGame);
-    UI::Checkbox("Show/hide with Openplanet UI", S_HideWithOP);
-}
+
+[Setting category="Batch Processing"]
+int S_HardTimeoutMinutes = 30; // in min
+
+[Setting category="Batch Processing"]
+int S_SignalingWindow = 20000; // in ms

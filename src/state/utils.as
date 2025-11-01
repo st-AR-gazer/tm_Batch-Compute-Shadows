@@ -16,19 +16,23 @@ namespace _Text {
     }
 
     int NthIndexOf(const string &in str, const string &in value, int n) {
-        int index = -1;
+        if (n <= 0) return -1;
+        int from = 0;
+        int pos = -1;
         for (int i = 0; i < n; ++i) {
-            index = str.IndexOf(value, index + 1);
-            if (index == -1) break;
+            int rel = str.SubStr(from).IndexOf(value);
+            if (rel < 0) return -1;
+            pos = from + rel;
+            from = pos + value.Length;
         }
-        return index;
+        return pos;
     }
 
     // ty XertroV
     string GetRandomIcon(const string &in hash) {
         auto icons = Icons::GetAll();
         auto iconKeys = icons.GetKeys();
-        if (hash.Length < 16) log("Hash must be at least 16 hex characters long.", LogLevel::Error, 84, "GetRandomIcon");
+        if (hash.Length < 16) log("Hash must be at least 16 hex characters long.", LogLevel::Error, 35, "GetRandomIcon");
         auto n = Text::ParseUInt(hash.SubStr(4, 4), 16);
         return string(icons[iconKeys[n % iconKeys.Length]]);
     }
@@ -73,9 +77,9 @@ namespace _IO {
 
         void WriteFile(string _path, const string &in content, bool verbose = false) {
             string path = _path;
-            if (verbose) log("Writing to file: " + path, LogLevel::Info, 84, "WriteFile");
+            if (verbose) log("Writing to file: " + path, LogLevel::Info, 80, "WriteFile");
 
-            if (path.EndsWith("/") || path.EndsWith("\\")) { log("Invalid file path: " + path, LogLevel::Error, 86, "WriteFile"); return; }
+            if (path.EndsWith("/") || path.EndsWith("\\")) { log("Invalid file path: " + path, LogLevel::Error, 82, "WriteFile"); return; }
 
             if (!IO::FolderExists(Path::GetDirectoryName(path))) { IO::CreateFolder(Path::GetDirectoryName(path), true); }
 
@@ -105,8 +109,8 @@ namespace _IO {
 
         // Read from file
         string ReadFileToEnd(const string &in path, bool verbose = false) {
-            if (verbose) log("Reading file: " + path, LogLevel::Info, 114, "ReadFileToEnd");
-            if (!IO::FileExists(path)) { log("File does not exist: " + path, LogLevel::Error, 115, "ReadFileToEnd"); return ""; }
+            if (verbose) log("Reading file: " + path, LogLevel::Info, 112, "ReadFileToEnd");
+            if (!IO::FileExists(path)) { log("File does not exist: " + path, LogLevel::Error, 113, "ReadFileToEnd"); return ""; }
 
             IO::File file(path, IO::FileMode::Read);
             string content = file.ReadToEnd();
@@ -115,7 +119,7 @@ namespace _IO {
         }
         
         string ReadSourceFileToEnd(const string &in path, bool verbose = false) {
-            if (!IO::FileExists(path)) { log("File does not exist: " + path, LogLevel::Error, 124, "ReadSourceFileToEnd"); return ""; }
+            if (!IO::FileExists(path)) { log("File does not exist: " + path, LogLevel::Error, 122, "ReadSourceFileToEnd"); return ""; }
 
             IO::FileSource f(path);
             string content = f.ReadToEnd();
@@ -124,20 +128,20 @@ namespace _IO {
 
         // Move file
         void CopySourceFileToNonSource(const string &in originalPath, const string &in storagePath, bool verbose = false) {
-            if (verbose) log("Moving the file content", LogLevel::Info, 133, "CopySourceFileToNonSource");
+            if (verbose) log("Moving the file content", LogLevel::Info, 131, "CopySourceFileToNonSource");
             
             string fileContents = ReadSourceFileToEnd(originalPath);
             WriteFile(storagePath, fileContents);
 
-            if (verbose) log("Finished moving the file", LogLevel::Info, 138, "CopySourceFileToNonSource");
+            if (verbose) log("Finished moving the file", LogLevel::Info, 136, "CopySourceFileToNonSource");
 
             // TODO: Must check how IO::Move works with source files
         }
 
         // Copy file
         void CopyFileTo(const string &in source, const string &in destination, bool verbose = false) {
-            if (!IO::FileExists(source)) { if (verbose) log("Source file does not exist: " + source, LogLevel::Error, 145, "CopyFileTo"); return; }
-            if (IO::FileExists(destination)) { if (verbose) log("Destination file already exists: " + destination, LogLevel::Error, 146, "CopyFileTo"); return; }
+            if (!IO::FileExists(source)) { if (verbose) log("Source file does not exist: " + source, LogLevel::Error, 143, "CopyFileTo"); return; }
+            if (IO::FileExists(destination)) { if (verbose) log("Destination file already exists: " + destination, LogLevel::Error, 144, "CopyFileTo"); return; }
 
             string content = ReadFileToEnd(source, verbose);
             WriteFile(destination, content, verbose);
@@ -145,8 +149,8 @@ namespace _IO {
 
         // Rename file
         void RenameFile(const string &in filePath, const string &in newFileName, bool verbose = false) {
-            if (verbose) log("Attempting to rename file: " + filePath, LogLevel::Info, 154, "RenameFile");
-            if (!IO::FileExists(filePath)) { log("File does not exist: " + filePath, LogLevel::Error, 155, "RenameFile"); return; }
+            if (verbose) log("Attempting to rename file: " + filePath, LogLevel::Info, 152, "RenameFile");
+            if (!IO::FileExists(filePath)) { log("File does not exist: " + filePath, LogLevel::Error, 153, "RenameFile"); return; }
 
             string currentPath = filePath;
             string newPath;
@@ -174,7 +178,7 @@ namespace _IO {
         if (IO::FolderExists(path)) {
             OpenExplorerPath(path);
         } else {
-            if (verbose) log("Folder does not exist: " + path, LogLevel::Info, 183, "OpenFolder");
+            if (verbose) log("Folder does not exist: " + path, LogLevel::Info, 181, "OpenFolder");
         }
     }
 }
