@@ -1,4 +1,4 @@
-build_name_overwrite = ""
+build_name_overwrite = "BatchComputeShadows"
 # Empty = No overwrite by default
 
 import argparse
