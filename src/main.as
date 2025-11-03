@@ -8,7 +8,6 @@ const string  menuTitle = menuIconColor + pluginIcon + "\\$z " + pluginMeta.Name
 // ----- //
 
 namespace PluginState {
-    bool ShowWindow = true;
     bool IsRunning = false;
     string SelectedFolder = IO::FromUserGameFolder("Maps/");
     Quality::Level TargetQuality = Quality::Level::High;
@@ -36,7 +35,7 @@ void Main() {
 }
 
 void RenderInterface() {
-    if (!S_Enabled || (S_HideWithGame && !UI::IsGameUIVisible()) || (S_HideWithOP && !UI::IsOverlayShown())) { return; }
+    if (!S_EnabledWindow || (S_HideWithGame && !UI::IsGameUIVisible()) || (S_HideWithOP && !UI::IsOverlayShown())) { return; }
  
     RenderWindow();
 }
@@ -47,8 +46,8 @@ void Render() {
 
 const string kMenuTitle = Icons::MoonO + " Batch Shadow Compute";
 void RenderMenu() {
-    if (UI::MenuItem(kMenuTitle, "", PluginState::ShowWindow)) {
-        PluginState::ShowWindow = !PluginState::ShowWindow;
+    if (UI::MenuItem(kMenuTitle, "", S_EnabledWindow)) {
+        S_EnabledWindow = !S_EnabledWindow;
     }
 }
 

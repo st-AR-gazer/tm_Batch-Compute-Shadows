@@ -217,8 +217,8 @@ namespace ui {
 
     // Main window
     void RenderMainWindow() {
-        if (!PluginState::ShowWindow) return;
-        if (!UI::Begin(Icons::MoonO + " Batch Shadow Compute###BatchShadowCompute", PluginState::ShowWindow, UI::WindowFlags::AlwaysAutoResize)) { UI::End(); return; }
+        if (!S_EnabledWindow) return;
+        if (!UI::Begin(Icons::MoonO + " Batch Shadow Compute###BatchShadowCompute", S_EnabledWindow, UI::WindowFlags::AlwaysAutoResize)) { UI::End(); return; }
 
         UI::TextDisabled("1) Pick a folder with maps (.Map.Gbx)");
         UI::Separator();

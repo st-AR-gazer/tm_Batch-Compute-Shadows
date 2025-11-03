@@ -1,5 +1,5 @@
 [Setting category="General"]
-bool S_Enabled = true;
+bool S_EnabledWindow;
 
 [Setting category="General"]
 bool S_HideWithGame = false;
