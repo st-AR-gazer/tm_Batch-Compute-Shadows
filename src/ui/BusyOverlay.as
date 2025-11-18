@@ -5,6 +5,10 @@ namespace BusyOverlay {
         string sub;
         string detail;
         UI::Texture@ texture;
+
+        bool showTimer = false;
+        uint timerStartMs = 0;
+        string timerPrefix;
     }
 }
 
