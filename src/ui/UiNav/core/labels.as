@@ -1,5 +1,7 @@
 namespace UINavEx {
 
+    const uint kLabelBudgetMaxVisited = 12000;
+
     CControlLabel@ FindLabelContains(const string &in needle, string &out foundPath, uint overlay = 16, uint maxDepth = 14, uint maxVisited = 4000) {
         foundPath = "";
         CScene2d@ scene;
@@ -113,6 +115,8 @@ namespace UINavEx {
         string px = NormalizeForCompare(prefix).ToLower();
 
         uint visited = 0;
+        uint ny = nodesPerYield > 0 ? nodesPerYield : 80;
+
         for (uint r = 0; r < scene.Mobils.Length; r++) {
             CControlFrame@ root = _RootFromMobil(scene, r);
             if (root is null) continue;
@@ -155,7 +159,15 @@ namespace UINavEx {
                 }
 
                 visited++;
-                if ((visited % nodesPerYield) == 0) yield(0);
+                if (kLabelBudgetMaxVisited != 0 && visited >= kLabelBudgetMaxVisited) {
+                    foundPath = "";
+                    return null;
+                }
+
+                if ((visited % ny) == 0) {
+                    yield(0);
+                    if (deadlineMs != 0 && Time::Now >= deadlineMs) { foundPath = ""; return null; }
+                }
             }
         }
         return null;
@@ -169,6 +181,8 @@ namespace UINavEx {
         string nd = NormalizeForCompare(needle).ToLower();
 
         uint visited = 0;
+        uint ny = nodesPerYield > 0 ? nodesPerYield : 80;
+
         for (uint r = 0; r < scene.Mobils.Length; r++) {
             CControlFrame@ root = _RootFromMobil(scene, r);
             if (root is null) continue;
@@ -211,7 +225,15 @@ namespace UINavEx {
                 }
 
                 visited++;
-                if ((visited % nodesPerYield) == 0) yield(0);
+                if (kLabelBudgetMaxVisited != 0 && visited >= kLabelBudgetMaxVisited) {
+                    foundPath = "";
+                    return null;
+                }
+
+                if ((visited % ny) == 0) {
+                    yield(0);
+                    if (deadlineMs != 0 && Time::Now >= deadlineMs) { foundPath = ""; return null; }
+                }
             }
         }
         return null;

@@ -38,7 +38,8 @@ void RenderInterface() {
     if (!S_EnabledWindow || (S_HideWithGame && !UI::IsGameUIVisible()) || (S_HideWithOP && !UI::IsOverlayShown())) { return; }
  
     RenderWindow();
-    UINavEx::DevUI::Render();
+
+    // UINavEx::DevUI::Render();
 }
 
 void Render() {

@@ -1,7 +1,7 @@
 namespace GameBrowserPath {
     const uint kOverlay = 3;
 
-    const string kLabelPathSpec = "0/0/0/*<20><21><22><23>/0/0/0/3/0";
+    const string kLabelPathSpec = "0/0/0/20/0/0/0/3/0";
     const string kNeedle        = "My local tracks";
     const string kPrefix        = "%1%2%3My local tracks/";
 
@@ -75,9 +75,9 @@ namespace GameBrowserPath {
         uint deadline = Time::Now + uint(timeoutMs);
 
         string found;
-        CControlLabel@ lbl = UINavEx::FindLabelStartsWithBudgeted(kNeedle, found, kOverlay, 18, 500, deadline);
+        CControlLabel@ lbl = UINavEx::FindLabelStartsWithBudgeted(kNeedle, found, kOverlay, 18, 80, deadline);
         if (lbl is null)
-            @lbl = UINavEx::FindLabelContainsBudgeted(kNeedle, found, kOverlay, 18, 500, deadline);
+            @lbl = UINavEx::FindLabelContainsBudgeted(kNeedle, found, kOverlay, 18, 80, deadline);
 
         if (lbl !is null) {
             label = lbl.Label;
@@ -123,9 +123,6 @@ namespace GameBrowserPath {
         string abs, lastSeg;
         _ComputeBestFolderForRel(rel, abs, lastSeg);
         PluginState::SelectedFolder = abs;
-        if (lastSeg.Length > 0) {
-            PluginState::MapsFilter = lastSeg;
-        }
         return true;
     }
 
@@ -145,7 +142,6 @@ namespace GameBrowserPath {
         string abs, lastSeg;
         _ComputeBestFolderForRel(rel, abs, lastSeg);
         PluginState::SelectedFolder = abs;
-        if (lastSeg.Length > 0) PluginState::MapsFilter = lastSeg;
 
         UI::ShowNotification("Batch Shadows", "Folder set from Game Browser:\n" + PluginState::SelectedFolder, 4500);
     }
@@ -160,7 +156,6 @@ namespace GameBrowserPath {
         string abs, lastSeg;
         _ComputeBestFolderForRel(rel, abs, lastSeg);
         PluginState::SelectedFolder = abs;
-        if (lastSeg.Length > 0) PluginState::MapsFilter = lastSeg;
 
         auto maps = Indexer::FindMaps(PluginState::SelectedFolder);
         for (uint i = 0; i < maps.Length; ++i)
@@ -168,6 +163,5 @@ namespace GameBrowserPath {
 
         PluginState::IndexedMaps = maps;
         BatchRunner::ReconcileSelectionsAfterIndex(PluginState::IndexedMaps);
-
     }
 }
