@@ -2,7 +2,7 @@ namespace UINavEx {
 
     void DumpOverlay(uint overlay = 16, int maxDepth = 5) {
         CScene2d@ scene;
-        if (!_GetScene2d(overlay, scene)) { log("DumpOverlay: no scene for overlay " + overlay, LogLevel::Debug); return; }
+        if (!_GetScene2d(overlay, scene)) { log("DumpOverlay: no scene for overlay " + overlay, LogLevel::Debug, 5, "DumpOverlay"); return; }
         for (uint i = 0; i < scene.Mobils.Length; i++) {
             CControlFrame@ r = _RootFromMobil(scene, i);
             if (r is null) continue;

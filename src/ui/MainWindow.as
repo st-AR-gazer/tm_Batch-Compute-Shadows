@@ -234,14 +234,14 @@ namespace ui {
         string before = PluginState::SelectedFolder;
         PluginState::SelectedFolder = UI::InputText("Folder", PluginState::SelectedFolder);
         UI::PopItemWidth();
-        if (PluginState::SelectedFolder != before) { log("Folder text changed: " + PluginState::SelectedFolder, LogLevel::Debug, 233, "RenderMainWindow"); }
+        if (PluginState::SelectedFolder != before) { log("Folder text changed: " + PluginState::SelectedFolder, LogLevel::Debug, 237, "RenderMainWindow"); }
 
         UI::SameLine();
         if (UI::Button(Icons::FolderOpen + " Browse...")) {
             string startPath = PluginState::SelectedFolder;
             if (startPath.Length == 0 || !IO::FolderExists(startPath)) startPath = IO::FromUserGameFolder("Maps/");
             FileExplorer::fe_Start("BatchMapsFolder", true, "path", vec2(1, 1), startPath, "", { }, { "*" });
-            log("Opening FileExplorer at: " + startPath, LogLevel::Info, 240, "RenderMainWindow");
+            log("Opening FileExplorer at: " + startPath, LogLevel::Info, 244, "RenderMainWindow");
         }
 
         if (UI::IsItemHovered()) {
@@ -260,7 +260,7 @@ namespace ui {
                     if (!IO::FolderExists(p)) p = Path::GetDirectoryName(p);
                     if (IO::FolderExists(p)) {
                         PluginState::SelectedFolder = p;
-                        log("Folder selected via explorer: " + p, LogLevel::Notice, 259, "RenderMainWindow", "select", "\\$0af");
+                        log("Folder selected via explorer: " + p, LogLevel::Notice, 263, "RenderMainWindow", "select", "\\$0af");
                     }
                 }
                 explorer.exports.SetSelectionComplete();
@@ -287,12 +287,12 @@ namespace ui {
         UI::SameLine();
         UI::PushStyleColor(UI::Col::Button, vec4(0.1, 0.7, 0.1, 0.5));
         if (UI::Button(Icons::Search + " Scan")) {
-            log("Scanning for maps in: " + PluginState::SelectedFolder, LogLevel::Info, 286, "RenderMainWindow", "scan");
+            log("Scanning for maps in: " + PluginState::SelectedFolder, LogLevel::Info, 290, "RenderMainWindow", "scan");
             auto maps = Indexer::FindMaps(PluginState::SelectedFolder);
             for (uint i = 0; i < maps.Length; ++i) maps[i] = PathUtil::NormalizePath(maps[i]);
             PluginState::IndexedMaps = maps;
             BatchRunner::ReconcileSelectionsAfterIndex(PluginState::IndexedMaps);
-            log("Scan complete. Found " + PluginState::IndexedMaps.Length + " maps.", LogLevel::Notice, 291, "RenderMainWindow", "scan");
+            log("Scan complete. Found " + PluginState::IndexedMaps.Length + " maps.", LogLevel::Notice, 295, "RenderMainWindow", "scan");
         }
         UI::PopStyleColor();
 
@@ -332,13 +332,13 @@ namespace ui {
                 bool selInPlace = PluginState::SaveChoice == PluginState::SaveMode::InPlace;
                 if (UI::RadioButton("Same location as source (if under 'Maps/')", selInPlace)) {
                     PluginState::SaveChoice = PluginState::SaveMode::InPlace;
-                    log("Save mode: InPlace", LogLevel::Info, 331, "RenderMainWindow");
+                    log("Save mode: InPlace", LogLevel::Info, 335, "RenderMainWindow");
                 }
 
                 bool selExport = PluginState::SaveChoice == PluginState::SaveMode::Export;
                 if (UI::RadioButton("Export to folder under 'Maps'", selExport)) {
                     PluginState::SaveChoice = PluginState::SaveMode::Export;
-                    log("Save mode: Export", LogLevel::Info, 337, "RenderMainWindow");
+                    log("Save mode: Export", LogLevel::Info, 341, "RenderMainWindow");
                 }
 
                 if (PluginState::SaveChoice == PluginState::SaveMode::Export) {
@@ -351,7 +351,7 @@ namespace ui {
                     );
                     UI::PopItemWidth();
                     if (PluginState::ExportFolderRelUnderMaps != prev) {
-                        log("Export subfolder changed: " + PluginState::ExportFolderRelUnderMaps, LogLevel::Debug, 350, "RenderMainWindow");
+                        log("Export subfolder changed: " + PluginState::ExportFolderRelUnderMaps, LogLevel::Debug, 354, "RenderMainWindow");
                     }
 
                     UI::SameLine();
@@ -372,10 +372,10 @@ namespace ui {
                             if (PathUtil::ToMapsRelativeFolder(selected, rel)) {
                                 rel = PathUtil::StripLeadingMaps(rel);
                                 PluginState::ExportFolderRelUnderMaps = rel;
-                                log("Export subfolder selected: " + rel, LogLevel::Notice, 371, "RenderMainWindow", "select", "\\$0af");
+                                log("Export subfolder selected: " + rel, LogLevel::Notice, 375, "RenderMainWindow", "select", "\\$0af");
                             } else {
                                 UI::ShowNotification("Batch Shadows", "Please choose a folder inside your 'Maps' directory.");
-                                log("Attempted to select export folder outside 'Maps': " + selected, LogLevel::Warning, 374, "RenderMainWindow");
+                                log("Attempted to select export folder outside 'Maps': " + selected, LogLevel::Warning, 378, "RenderMainWindow");
                             }
                         }
                         saveExplorer.exports.SetSelectionComplete();
@@ -404,7 +404,7 @@ namespace ui {
                 bool prevSkip = PluginState::SkipAlreadyGood;
                 PluginState::SkipAlreadyGood = UI::Checkbox("Skip maps already at or above selected quality", PluginState::SkipAlreadyGood);
                 if (PluginState::SkipAlreadyGood != prevSkip) {
-                    log("SkipAlreadyGood changed: " + (PluginState::SkipAlreadyGood ? "true" : "false"), LogLevel::Debug, 403, "RenderMainWindow");
+                    log("SkipAlreadyGood changed: " + (PluginState::SkipAlreadyGood ? "true" : "false"), LogLevel::Debug, 407, "RenderMainWindow");
                 }
 
                 UI::Dummy(vec2(0, 8));
@@ -451,7 +451,7 @@ namespace ui {
                 if (!PluginState::IsRunning) {
                     UI::BeginDisabled(estQueue == 0);
                     if (UI::ButtonColored(Icons::Play + "  Start compute", 0.33f)) {
-                        log("Compute clicked.", LogLevel::Notice, 450, "RenderMainWindow", "start", "\\$0f0");
+                        log("Compute clicked.", LogLevel::Notice, 454, "RenderMainWindow", "start", "\\$0f0");
 
                         auto rec = PluginState::RunRecord();
                         rec.startedAtMs = Time::Now;
@@ -497,7 +497,7 @@ namespace ui {
                     UI::Text("\\$3B9" + Icons::HourglassStart + " Running...");
                     UI::SameLine();
                     if (UI::Button(Icons::Stop + " Stop")) {
-                        log("Stop clicked.", LogLevel::Warning, 496, "RenderMainWindow", "stop", "\\$fb0");
+                        log("Stop clicked.", LogLevel::Warning, 500, "RenderMainWindow", "stop", "\\$fb0");
                         BatchRunner::Stop();
                     }
                 }
