@@ -1,7 +1,11 @@
 namespace UINavEx {
 namespace DevUI {
 
+#if SIG_DEVELOPER
     [Setting category="Dev"] bool S_ShowUiNavDev = true;
+#else
+    bool S_ShowUiNavDev = false;
+#endif
 
     uint  gOverlay          = 3;
     uint  gMobil            = 0;
@@ -49,7 +53,12 @@ namespace DevUI {
 
     void OpenInNodeExplorer(CControlBase@ n) {
         if (n is null) return;
+
+#if SIG_DEVELOPER
         ExploreNod(n);
+#else
+        UI::ShowNotification("UINav", "Node Explorer can only be opened in the SIG_DEVELOPER mode.", 3000);
+#endif
     }
 
     string GetMwIdName(CControlBase@ n) {
